@@ -1,5 +1,6 @@
 package com.example.granne
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,9 +19,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
 
-    private lateinit var buttonSendMessage: Button
-    private lateinit var nicknameTextView: TextView
-    private lateinit var messageEditText: EditText
+    private lateinit var btnSendMessage: Button
+    private lateinit var nicknameTV: TextView
+    private lateinit var messageEdT: EditText
     private lateinit var textDisplay: TextView
 
     companion object {
@@ -40,23 +41,23 @@ class ChatActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         textDisplay = findViewById(R.id.textDisplay)
-        buttonSendMessage = findViewById(R.id.buttonSendMessage)
-        nicknameTextView = findViewById(R.id.nicknameTextView)
-        messageEditText = findViewById(R.id.messageEditText)
-        nicknameTextView.text = "User"
+        btnSendMessage = findViewById(R.id.buttonSendMessage)
+        nicknameTV = findViewById(R.id.nicknameTextView)
+        messageEdT = findViewById(R.id.messageEditText)
+        nicknameTV.text = "User"
 
 
         realtimeUpdateListener()
 
-        buttonSendMessage.setOnClickListener {
+        btnSendMessage.setOnClickListener {
             sendMessage()
         }
     }
 
     private fun sendMessage() {
         val newMessage = mapOf(
-            NAME_FIELD to nicknameTextView.text.toString(),
-            TEXT_FIELD to messageEditText.text.toString()
+            NAME_FIELD to nicknameTV.text.toString(),
+            TEXT_FIELD to messageEdT.text.toString()
         )
         firestoreChat.set(newMessage).addOnSuccessListener {
             Toast.makeText(this@ChatActivity, "Message Sent", Toast.LENGTH_SHORT).show()
@@ -64,6 +65,7 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun realtimeUpdateListener() {
         firestoreChat.addSnapshotListener { documentSnapshot, e ->
             when {
