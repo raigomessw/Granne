@@ -1,9 +1,7 @@
 package com.example.granne
 
-import android.graphics.Color
+
 import android.os.Bundle
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlin.collections.HashMap
+
 
 class InterestDialogFragment : DialogFragment() {
 
@@ -27,7 +25,7 @@ class InterestDialogFragment : DialogFragment() {
     private lateinit var checkBox5: CheckBox
     private lateinit var checkBox6: CheckBox
     private lateinit var checkBox7: CheckBox
-    lateinit var saveChangesButton: Button
+    private lateinit var saveChangesButton: Button
 
     lateinit var auth: FirebaseAuth
 
@@ -42,7 +40,7 @@ class InterestDialogFragment : DialogFragment() {
 
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
-        val docRef = db.collection("userData").document(currentUser!!.uid)
+        val checkBoxRef = db.collection("userData").document(currentUser!!.uid)
         aboutMeEditText = rootView.findViewById(R.id.aboutmeEditText)
         checkBox1 = rootView.findViewById(R.id.checkBox1)
         checkBox2 = rootView.findViewById(R.id.checkBox2)
@@ -93,13 +91,13 @@ class InterestDialogFragment : DialogFragment() {
                 count <= 0 -> showToast("Please select at least 1 interest!")
 
                 else -> {
-                    docRef.collection("interests").document("interestlist")
+                    checkBoxRef.collection("interests").document("interestList")
                         .set(userInterests)
                         .addOnSuccessListener {
-                            val aboutme = aboutMeEditText.text.toString()
+                            val aboutMe = aboutMeEditText.text.toString()
 
-                            if (aboutme.isNotEmpty()) {
-                                docRef.update("aboutme", aboutme)
+                            if (aboutMe.isNotEmpty()) {
+                                checkBoxRef.update("aboutMe", aboutMe)
                                     .addOnSuccessListener {
                                         dismiss()
                                     }

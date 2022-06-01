@@ -15,12 +15,12 @@ import com.google.firebase.ktx.Firebase
 
 class PersonFindMatchRecycleViewAdapter(
     val context: Context,
-    val persons: List<PersonFindMatch>,
+    private val persons: List<PersonFindMatch>,
 ) : RecyclerView.Adapter<PersonFindMatchRecycleViewAdapter.ViewHolder>() {
 
     var auth = Firebase.auth
     val db = Firebase.firestore
-    val layoutInflater = LayoutInflater.from(context)
+    private val layoutInflater = LayoutInflater.from(context)
 
     override fun getItemCount(): Int {
         return persons.size
@@ -34,14 +34,14 @@ class PersonFindMatchRecycleViewAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val person = persons[position]
 
-        holder.nameTextView.text = person.name.toString()
-        holder.interestTextView.text = person.intressen.toString()
-        holder.aboutMeTextView.text = person.aboutMe.toString()
+        holder.nameTV.text = person.name.toString()
+        holder.interestTV.text = person.intressen.toString()
+        holder.aboutMeTV.text = person.aboutMe.toString()
 
         holder.buttonAdd.setOnClickListener {
             val nickname = person.name.toString()
             val userUid = person.uid.toString()
-            var veryBadIdGenerator = (234234324..4343434345).random().toString()
+            val veryBadIdGenerator = (234234324..4343434345).random().toString()
 
 
             val mapOfDetails = hashMapOf(
@@ -68,21 +68,21 @@ class PersonFindMatchRecycleViewAdapter(
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val nameTextView = itemView.findViewById<TextView>(R.id.tvName)
-        val interestTextView = itemView.findViewById<TextView>(R.id.tvIntressen)
-        val aboutMeTextView = itemView.findViewById<TextView>(R.id.tvAboutMe)
-        val buttonAdd = itemView.findViewById<ImageButton>(R.id.btnAdd)
+        val nameTV: TextView = itemView.findViewById(R.id.tvName)
+        val interestTV: TextView = itemView.findViewById(R.id.tvIntressen)
+        val aboutMeTV: TextView = itemView.findViewById(R.id.tvAboutMe)
+        val buttonAdd: ImageButton = itemView.findViewById(R.id.btnAdd)
 
     }
 
     private fun addYourselfToSecondUserMatchedList(uid: String, chatId: String) {
         db.collection("userData").document(auth.currentUser!!.uid).get()
             .addOnSuccessListener { documents ->
-                val myName = documents.data!!.getValue("nickname").toString()
+                val myName = documents.data!!.getValue("nickName").toString()
                 val myUid = auth.currentUser!!.uid
 
                 val mapOfDetails = hashMapOf(
-                    "nickname" to myName,
+                    "nickName" to myName,
                     "uid" to myUid,
                     "chatId" to chatId
                 )

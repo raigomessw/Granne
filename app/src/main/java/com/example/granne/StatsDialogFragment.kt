@@ -1,7 +1,7 @@
 package com.example.granne
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +17,7 @@ class StatsDialogFragment : DialogFragment() {
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,20 +27,21 @@ class StatsDialogFragment : DialogFragment() {
         auth = Firebase.auth
 
         val rootView: View = inflater.inflate(R.layout.stats_dialog_fragment, container, false)
-        val docRef = db.collection("userData").document(auth.currentUser!!.uid)
+        val searchUser = db.collection("userData").document(auth.currentUser!!.uid)
+        //Hämta user i firebase
 
         val nickname = rootView.findViewById<TextView>(R.id.nicknameText)
         val email = rootView.findViewById<TextView>(R.id.emailText)
         val aboutMe = rootView.findViewById<TextView>(R.id.aboutMeText)
         val matchedUsers = rootView.findViewById<TextView>(R.id.matchedUsers)
 
-        docRef.get()
+        searchUser.get()
             .addOnSuccessListener { documents ->
-                nickname.text = "Nickname: ${documents.data!!.getValue("nickname")}"
+                nickname.text = "NickName: ${documents.data!!.getValue("nickName")}"
                 email.text = "Email: ${documents.data!!.getValue("email")}"
-                aboutMe.text = "About me: ${documents.data!!.getValue("aboutme")}"
+                aboutMe.text = "About me: ${documents.data!!.getValue("aboutMe")}"
 
-                docRef.collection("matchedUsers").get()
+                searchUser.collection("matchedUsers").get()
                     .addOnSuccessListener { usersMatched ->
                         val matchedList = mutableListOf<String>()
 

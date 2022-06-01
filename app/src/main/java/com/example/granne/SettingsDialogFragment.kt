@@ -8,9 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.DialogFragment
-import android.widget.AdapterView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -28,19 +26,19 @@ class SettingsDialogFragment : DialogFragment() {
     ): View {
         val rootView: View = inflater.inflate(R.layout.fragment_settings_dialog, container, false)
 
-        val nicknameEditText = rootView.findViewById<EditText>(R.id.nicknameEditText)
-        val nicknameButton = rootView.findViewById<Button>(R.id.nicknameButton)
+        val nicknameEdT = rootView.findViewById<EditText>(R.id.nicknameEditText)
+        val nicknameBtn = rootView.findViewById<Button>(R.id.nicknameButton)
         val spinner = rootView.findViewById<Spinner>(R.id.spinnerLocation)
         val buttonSignOut = rootView.findViewById<Button>(R.id.buttonSignOut)
-        val locationButton = rootView.findViewById<Button>(R.id.locationButton)
-        val deleteAccountButton = rootView.findViewById<Button>(R.id.deleteAccountButton)
+        val locationBtn = rootView.findViewById<Button>(R.id.locationButton)
+        val deleteAccountBtn = rootView.findViewById<Button>(R.id.deleteAccountButton)
 
         auth = Firebase.auth
 
         val currentUser = auth.currentUser
 
-        nicknameButton.setOnClickListener {
-            val nickname = nicknameEditText.text.toString()
+        nicknameBtn.setOnClickListener {
+            val nickname = nicknameEdT.text.toString()
             when (nickname.isEmpty()) {
                 true -> showToast("Please enter a new username!")
 
@@ -49,10 +47,10 @@ class SettingsDialogFragment : DialogFragment() {
                         showToast("Username cant be less than 6 characters")
                     } else {
                         db.collection("userData").document(currentUser!!.uid)
-                            .update("nickname", nickname)
+                            .update("nickName", nickname)
                             .addOnSuccessListener {
                                 showToast("Nickname changed!")
-                                nicknameEditText.setText("")
+                                nicknameEdT.setText("")
                             }
 
                             .addOnFailureListener { e -> Log.d("!", "Error:", e) }
@@ -71,7 +69,7 @@ class SettingsDialogFragment : DialogFragment() {
             ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, locations)
         spinner.adapter = arrayAdapter
 
-        locationButton.setOnClickListener {
+        locationBtn.setOnClickListener {
             val newLocation = spinner.selectedItem.toString()
 
             db.collection("userData").document(currentUser!!.uid)
@@ -91,7 +89,7 @@ class SettingsDialogFragment : DialogFragment() {
             startActivity(startLoginScreen)
         }
 
-        deleteAccountButton.setOnClickListener {
+        deleteAccountBtn.setOnClickListener {
             db.collection("userData").document(FirebaseAuth.getInstance().currentUser!!.uid)
                 .delete()
                 .addOnSuccessListener {

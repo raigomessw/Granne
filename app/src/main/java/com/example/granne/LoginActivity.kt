@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -20,13 +19,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
 
-    lateinit var buttonSignIn: Button
-    lateinit var emailEditText: EditText
-    lateinit var passwordEditText: EditText
-    lateinit var tv_forgotPassword: TextView
+    private lateinit var buttonSignIn: Button
+    private lateinit var emailEdtText: EditText
+    private lateinit var passwordEdtText: EditText
+    private lateinit var tvForgotPassword: TextView
 
-    lateinit var email: String
-    lateinit var password: String
+    private lateinit var email: String
+    private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,11 +33,11 @@ class LoginActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         buttonSignIn = findViewById(R.id.buttonSignIn)
-        emailEditText = findViewById(R.id.emailEditText)
-        passwordEditText = findViewById(R.id.passwordEditText)
-        tv_forgotPassword = findViewById(R.id.tv_forgotPassword)
+        emailEdtText = findViewById(R.id.emailEditText)
+        passwordEdtText = findViewById(R.id.passwordEditText)
+        tvForgotPassword = findViewById(R.id.tv_forgotPassword)
 
-        tv_forgotPassword.setOnClickListener {
+        tvForgotPassword.setOnClickListener {
             startActivity(Intent(this@LoginActivity, ForgotPasswordActivity::class.java))
         }
 
@@ -58,8 +57,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkUserInputs(): Boolean {
-        email = emailEditText.text.toString()
-        password = passwordEditText.text.toString()
+        email = emailEdtText.text.toString()
+        password = passwordEdtText.text.toString()
 
         return !(email.isEmpty() || password.isEmpty())
     }

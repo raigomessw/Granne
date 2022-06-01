@@ -3,13 +3,11 @@ package com.example.granne
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.ArrayList
@@ -20,8 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-    lateinit var spinner: Spinner
-    lateinit var locale: Locale
+    private lateinit var spinner: Spinner
+    private lateinit var locale: Locale
 
     private var currentLanguage = "en"
     private var currentLang: String? = null
@@ -45,12 +43,12 @@ class MainActivity : AppCompatActivity() {
         currentLanguage = intent.getStringExtra(currentLang).toString()
         spinner = findViewById(R.id.spinner)
 
-        val list = ArrayList<String>()
-        list.add("Language")
-        list.add("English")
-        list.add("Svenska")
+        val language = ArrayList<String>()
+        language.add("Language")
+        language.add("English")
+        language.add("Svenska")
 
-        val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, list)
+        val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, language)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
