@@ -18,13 +18,13 @@ class FindMatchActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
 
-    lateinit var interestButton: Button
-    lateinit var searchMatchButton: Button
-    lateinit var recyclerView: RecyclerView
-    var persons = mutableListOf<PersonFindMatch>()
+    private lateinit var interestButton: Button
+    private lateinit var searchMatchButton: Button
+    private lateinit var recyclerView: RecyclerView
+    private var persons = mutableListOf<PersonFindMatch>()
 
-    lateinit var userLocation: Any
-    var userInterests = mutableListOf<String>()
+    private lateinit var userLocation: Any
+    private var userInterests = mutableListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +52,7 @@ class FindMatchActivity : AppCompatActivity() {
                 .addOnSuccessListener { documents ->
                     userLocation = documents.data!!.getValue("location")
 
-                    userDocRef.collection("interests").document("interestlist")
+                    userDocRef.collection("interests").document("interestList")
                         .get()
 
                         .addOnSuccessListener { document ->
@@ -98,7 +98,7 @@ class FindMatchActivity : AppCompatActivity() {
 
     private fun checkUserInterests(UID: String) {
         db.collection("userData").document(UID)
-            .collection("interests").document("interestlist")
+            .collection("interests").document("interestList")
             .get()
             .addOnSuccessListener { documents ->
 
@@ -109,7 +109,8 @@ class FindMatchActivity : AppCompatActivity() {
                     val sameInterestsList = mutableListOf<String>()
                     sameInterestsList.clear()
 
-                    userInterests.forEachIndexed { index, value ->
+
+                    userInterests.forEachIndexed { _, value ->
                         if (secondUserInterests.contains(value)) {
                             sameInterestsList.add(value)
                         }
@@ -137,7 +138,7 @@ class FindMatchActivity : AppCompatActivity() {
 
                 val matchedUsersNickname = document.data!!.getValue("nickname").toString()
                 val matchedUsersLocation = document.data!!.getValue("location").toString()
-                val matchedUsersAboutMe = document.data!!.getValue("aboutme").toString()
+                val matchedUsersAboutMe = document.data!!.getValue("about").toString()
                 val matchedUsersUid = document.data!!.getValue("uid").toString()
 
                 Log.d("!", "<------------------------ Matched user info ------------------------>")
@@ -158,7 +159,7 @@ class FindMatchActivity : AppCompatActivity() {
     }
 
     private fun addToList(
-        nickname: String,
+        nickName: String,
         aboutMe: String,
         allInterests: MutableCollection<Any>,
         matchedUID: String,
@@ -166,11 +167,11 @@ class FindMatchActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = PersonFindMatchRecycleViewAdapter(this, persons)
 
-        persons.add(PersonFindMatch(nickname, aboutMe, allInterests, matchedUID))
+        persons.add(PersonFindMatch(nickName, aboutMe, allInterests, matchedUID))
 
     }
 
-    private fun showToast(toastMessage: String) {
+    private fun showToast(toastMessage : String) {
         val toast = Toast.makeText(applicationContext, toastMessage, Toast.LENGTH_SHORT)
         toast.show()
     }

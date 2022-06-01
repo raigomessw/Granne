@@ -36,9 +36,11 @@ class ChatListActivity : AppCompatActivity() {
             .addOnSuccessListener { result ->
                 // Shows all our matched users in the RecycleView
                 if (result.isEmpty) {
-                    Toast.makeText(applicationContext,
+                    Toast.makeText(
+                        applicationContext,
                         "You have no active chats!",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 } else {
                     for (document in result) {

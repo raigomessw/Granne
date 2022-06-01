@@ -23,19 +23,16 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
         auth = Firebase.auth
 
-        lateinit var btn_submitPassword: Button
-        lateinit var et_enterEmail: EditText
+        val btnSubmitPassword: Button = findViewById(R.id.btn_submitPassword)
+        val enterEmail: EditText = findViewById(R.id.et_enterEmail)
 
-        btn_submitPassword = findViewById(R.id.btn_submitPassword)
-        et_enterEmail = findViewById(R.id.et_enterEmail)
-
-        btn_submitPassword.setOnClickListener {
-            val email: String = et_enterEmail.text.toString().trim { it <= ' ' }
+        btnSubmitPassword.setOnClickListener {
+            val email: String = enterEmail.text.toString().trim { it <= ' ' }
             if (email.isEmpty()) {
                 Log.d(TAG, "Enter Email")
                 Toast.makeText(
                     this@ForgotPasswordActivity,
-                    "Please enter your email adress.",
+                    "Please enter your email address.",
                     Toast.LENGTH_SHORT
                 ).show()
             }else{

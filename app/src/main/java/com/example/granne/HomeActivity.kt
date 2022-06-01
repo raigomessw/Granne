@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.ImageButton
 import com.google.firebase.auth.FirebaseAuth
@@ -18,11 +17,11 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
 
-    lateinit var nicknameUnderIcon: TextView
-    lateinit var buttonFindMatch: ImageButton
-    lateinit var buttonOptions: ImageButton
-    lateinit var buttonChat: ImageButton
-    lateinit var buttonInfo: ImageButton
+    private lateinit var nicknameUnderIcon: TextView
+    private lateinit var buttonFindMatch: ImageButton
+    private lateinit var buttonOptions: ImageButton
+    private lateinit var buttonChat: ImageButton
+    private lateinit var buttonInfo: ImageButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,13 +40,11 @@ class HomeActivity : AppCompatActivity() {
         buttonChat.setOnClickListener {
             startActivity(Intent(this, ChatListActivity::class.java))
 
-            //val chatIntent = Intent(this, ChatActivity::class.java)
-            //startActivity(chatIntent)
         }
 
         buttonOptions.setOnClickListener {
             val dialog = SettingsDialogFragment()
-            dialog.show(supportFragmentManager, "optionsdialog")
+            dialog.show(supportFragmentManager, "optionsDialog")
         }
 
         buttonFindMatch.setOnClickListener {
@@ -71,7 +68,6 @@ class HomeActivity : AppCompatActivity() {
                 if (error != null) {
                     return@addSnapshotListener // Stop listening to this snapshot
                 }
-
                 if (snapshot != null && snapshot.exists()) {
                     nicknameUnderIcon.text = snapshot.data!!.getValue("nickname").toString()
                 } else {

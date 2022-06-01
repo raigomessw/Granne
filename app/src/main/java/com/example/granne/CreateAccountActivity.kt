@@ -16,16 +16,16 @@ class CreateAccountActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     val db = Firebase.firestore
 
-    lateinit var buttonRegister: Button
-    lateinit var nicknameEditText: EditText
-    lateinit var emailEditText: EditText
-    lateinit var passwordEditText: EditText
-    lateinit var tosText: TextView
-    lateinit var tosBox: CheckBox
+    private lateinit var buttonRegister: Button
+    private lateinit var nicknameEditText: EditText
+    private lateinit var emailEditText: EditText
+    private lateinit var passwordEditText: EditText
+    private lateinit var tosText: TextView
+    private lateinit var tosBox: CheckBox
 
     lateinit var nickname: String
-    lateinit var email: String
-    lateinit var password: String
+    private lateinit var email: String
+    private lateinit var password: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,8 +75,8 @@ class CreateAccountActivity : AppCompatActivity() {
                         "nickname" to nickname,
                         "email" to email,
                         "uid" to user.uid,
-                        "location" to "",
-                        "aboutme" to "",  //  These will be filled later in the app
+                        "location" to ""
+
                     )
 
                     db.collection("userData")

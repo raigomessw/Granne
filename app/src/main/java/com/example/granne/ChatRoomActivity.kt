@@ -8,13 +8,10 @@ import android.widget.EditText
 import android.widget.TextView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class ChatRoomActivity : AppCompatActivity() {
-
-    data class Message(val name: String? = null, val text: String? = null)
 
 
     private lateinit var auth: FirebaseAuth
@@ -27,7 +24,7 @@ class ChatRoomActivity : AppCompatActivity() {
     private lateinit var messageTextView: TextView
     private lateinit var messageButton: Button
     private lateinit var userTitle: TextView
-    lateinit var messageList: ArrayList<String>
+    private lateinit var messageList: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +61,7 @@ class ChatRoomActivity : AppCompatActivity() {
         val chatInfo = hashMapOf(
             "user1" to secondUserNickname,
             "user2" to myNickname,
-            "messagelist" to messageList
+            "messages" to messageList
         )
 
         chatDocRef.get()
@@ -96,11 +93,11 @@ class ChatRoomActivity : AppCompatActivity() {
 
         chatDocRef.get()
             .addOnSuccessListener { list ->
-                val oldList = list.data!!.getValue("messagelist").toString()
+                val oldList = list.data!!.getValue("messages").toString()
                 messageList.add(oldList)
 
                 // add $messageList to view
-                Log.d("!","new list$messageList")
+                Log.d("!", "new list$messageList")
 
                 messageButton.setOnClickListener {
                     val text = "$myNickname: ${newMessageEditText.text}"
@@ -108,7 +105,7 @@ class ChatRoomActivity : AppCompatActivity() {
                     newMessageEditText.text.clear()
 
                     // add $text to view
-                    Log.d("!","Sent text: $text")
+                    Log.d("!", "Sent text: $text")
 
                     chatDocRef.update("messagelist", messageList)
 
