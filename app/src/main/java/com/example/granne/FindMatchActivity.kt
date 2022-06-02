@@ -32,12 +32,9 @@ class FindMatchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_find_match)
         auth = Firebase.auth
 
-        val currentUser = auth.currentUser
-
         interestButton = findViewById(R.id.interestButton)
         searchMatchButton = findViewById(R.id.searchMatchButton)
         recyclerView = findViewById(R.id.rwFindMatch)
-
 
         interestButton.setOnClickListener {
             val dialog = InterestDialogFragment()
@@ -46,44 +43,49 @@ class FindMatchActivity : AppCompatActivity() {
         }
 
         searchMatchButton.setOnClickListener {
-            val userDocRef = db.collection("userData").document(auth.currentUser!!.uid)
-
-            userDocRef.get()
-                .addOnSuccessListener { documents ->
-                    userLocation = documents.data!!.getValue("location")
-
-                    userDocRef.collection("interests").document("interestList")
-                        .get()
-
-                        .addOnSuccessListener { document ->
-                            if (document.data.isNullOrEmpty()) {
-                                showToast("Add your interests before searching!")
-                            } else {
-                                persons.clear()
-                                recyclerView.isVisible = true
-                                userInterests.clear()
-                                for (item in document.data!!.values) {
-                                    userInterests.add(item.toString())
-                                }
-
-                                db.collection("userData")
-                                    .get()
-                                    .addOnSuccessListener { documents ->
-                                        Log.d("!",
-                                            "<-------------- My interests: $userInterests -------------->")
-                                        for (userID in documents) {
-                                            if (userID.id != currentUser!!.uid) // Removes being able to find yourself in interest search
-                                                checkUserLocation(userID.id)
-                                        }
-                                    }
-                            }
-                        }
-                }
-                .addOnFailureListener { e ->
-                    Log.d("!", "Error:", e)
-                }
+            searchMatchBtn()
         }
 
+    }
+
+    private fun searchMatchBtn(){
+        val userDocRef = db.collection("userData").document(auth.currentUser!!.uid)
+        val currentUser = auth.currentUser
+
+        userDocRef.get()
+            .addOnSuccessListener { documents ->
+                userLocation = documents.data!!.getValue("location")
+
+                userDocRef.collection("interests").document("interestList")
+                    .get()
+
+                    .addOnSuccessListener { document ->
+                        if (document.data.isNullOrEmpty()) {
+                            showToast("Add your interests before searching!")
+                        } else {
+                            persons.clear()
+                            recyclerView.isVisible = true
+                            userInterests.clear()
+                            for (item in document.data!!.values) {
+                                userInterests.add(item.toString())
+                            }
+
+                            db.collection("userData")
+                                .get()
+                                .addOnSuccessListener { documents ->
+                                    Log.d("!",
+                                        "<-------------- My interests: $userInterests -------------->")
+                                    for (userID in documents) {
+                                        if (userID.id != currentUser!!.uid) // Removes being able to find yourself in interest search
+                                            checkUserLocation(userID.id)
+                                    }
+                                }
+                        }
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.d("!", "Error:", e)
+            }
     }
 
     private fun checkUserLocation(UID: String) {

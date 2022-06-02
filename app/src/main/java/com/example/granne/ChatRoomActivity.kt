@@ -15,14 +15,14 @@ class ChatRoomActivity : AppCompatActivity() {
 
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var myNickname: String
+    private lateinit var myNickName: String
     val db = Firebase.firestore
 
     private lateinit var chatKey: String
-    private lateinit var secondUserNickname: String
-    private lateinit var newMessageEditText: EditText
-    private lateinit var messageTextView: TextView
-    private lateinit var messageButton: Button
+    private lateinit var secondUserNickName: String
+    private lateinit var newMessageEdT: EditText
+    private lateinit var messageTV: TextView
+    private lateinit var messageBtn: Button
     private lateinit var userTitle: TextView
     private lateinit var messageList: ArrayList<String>
 
@@ -31,19 +31,19 @@ class ChatRoomActivity : AppCompatActivity() {
         setContentView(R.layout.activity_chat_room)
         auth = Firebase.auth
 
-        messageTextView = findViewById(R.id.messageTextView)
-        newMessageEditText = findViewById(R.id.newMessageEditText)
-        messageButton = findViewById(R.id.messageButton)
+        messageTV = findViewById(R.id.messageTextView)
+        newMessageEdT = findViewById(R.id.newMessageEditText)
+        messageBtn = findViewById(R.id.messageButton)
         userTitle = findViewById(R.id.userTitle)
 
-        secondUserNickname = intent.getStringExtra("secondUserNickname").toString()
+        secondUserNickName = intent.getStringExtra("secondUserNickname").toString()
         val secondUserUid: String = intent.getStringExtra("secondUserUid").toString()
         val myDocRef = db.collection("userData").document(auth.currentUser!!.uid)
 
 
         myDocRef.get()
             .addOnSuccessListener { name ->
-                myNickname = name.data!!.getValue("nickname").toString()
+                myNickName = name.data!!.getValue("nickName").toString()
 
                 myDocRef.collection("matchedUsers").document(secondUserUid).get()
                     .addOnSuccessListener { documents ->
@@ -59,8 +59,8 @@ class ChatRoomActivity : AppCompatActivity() {
         messageList = arrayListOf()
 
         val chatInfo = hashMapOf(
-            "user1" to secondUserNickname,
-            "user2" to myNickname,
+            "user1" to secondUserNickName,
+            "user2" to myNickName,
             "messages" to messageList
         )
 
@@ -71,12 +71,12 @@ class ChatRoomActivity : AppCompatActivity() {
 
                     chatDocRef.set(chatInfo)
                         .addOnSuccessListener {
-                            Log.d("!", "Created chat with $secondUserNickname")
+                            Log.d("!", "Created chat with $secondUserNickName")
                             updateChatUi()
                         }
                 }
                 if (task.exists()) {
-                    Log.d("!", "Joining chat with $secondUserNickname with chatId: $chatKey")
+                    Log.d("!", "Joining chat with $secondUserNickName with chatId: $chatKey")
                     updateChatUi()
                 }
             }
@@ -88,8 +88,8 @@ class ChatRoomActivity : AppCompatActivity() {
 
 
         // Sets title for the chatroom
-        val titleNickname = secondUserNickname
-        userTitle.text = titleNickname
+        val titleNickName = secondUserNickName
+        userTitle.text = titleNickName
 
         chatDocRef.get()
             .addOnSuccessListener { list ->
@@ -99,10 +99,10 @@ class ChatRoomActivity : AppCompatActivity() {
                 // add $messageList to view
                 Log.d("!", "new list$messageList")
 
-                messageButton.setOnClickListener {
-                    val text = "$myNickname: ${newMessageEditText.text}"
+                messageBtn.setOnClickListener {
+                    val text = "$myNickName: ${newMessageEdT.text}"
                     messageList.add(text)
-                    newMessageEditText.text.clear()
+                    newMessageEdT.text.clear()
 
                     // add $text to view
                     Log.d("!", "Sent text: $text")
@@ -123,7 +123,7 @@ class ChatRoomActivity : AppCompatActivity() {
                     val currentList = snapshot.data!!.getValue("messagelist")
                     if (currentList.toString().isNotEmpty()) {
 
-                        messageTextView.text = currentList.toString()
+                        messageTV.text = currentList.toString()
                             .replace("]", "")
                             .replace("[", "")
                             .replace(",", "")

@@ -109,6 +109,7 @@ class SettingsDialogFragment : DialogFragment() {
         return rootView
     }
 
+
     private fun showToast(toastMessage: String) {
         val toast = Toast.makeText(activity, toastMessage, Toast.LENGTH_SHORT)
         toast.show()

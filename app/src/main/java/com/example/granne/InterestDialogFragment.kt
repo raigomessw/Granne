@@ -39,8 +39,6 @@ class InterestDialogFragment : DialogFragment() {
         val rootView: View = inflater.inflate(R.layout.fragment_interest_dialog, container, false)
 
         auth = FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser
-        val checkBoxRef = db.collection("userData").document(currentUser!!.uid)
         aboutMeEditText = rootView.findViewById(R.id.aboutmeEditText)
         checkBox1 = rootView.findViewById(R.id.checkBox1)
         checkBox2 = rootView.findViewById(R.id.checkBox2)
@@ -53,63 +51,67 @@ class InterestDialogFragment : DialogFragment() {
 
 
         saveChangesButton.setOnClickListener {
-            val userInterests = hashMapOf<String, String>()
-            var count = 0
+            btnInterests()
+        }
+        return rootView
+    }
 
-            if (checkBox1.isChecked) {
-                count++
-                userInterests["interest$count"] = "Wildlife"
-            }
-            if (checkBox2.isChecked) {
-                count++
-                userInterests["interest$count"] = "Travel"
-            }
-            if (checkBox3.isChecked) {
-                count++
-                userInterests["interest$count"] = "Food"
-            }
-            if (checkBox4.isChecked) {
-                count++
-                userInterests["interest$count"] = "Socialising"
-            }
-            if (checkBox5.isChecked) {
-                count++
-                userInterests["interest$count"] = "Books"
-            }
-            if (checkBox6.isChecked) {
-                count++
-                userInterests["interest$count"] = "Games"
-            }
-            if (checkBox7.isChecked) {
-                count++
-                userInterests["interest$count"] = "Netflix"
-            }
+    private fun btnInterests(){
+        val currentUser = auth.currentUser
+        val checkBoxRef = db.collection("userData").document(currentUser!!.uid)
+        val userInterests = hashMapOf<String, String>()
+        var count = 0
 
-            when {
-                count > 6 -> showToast("Max 6 interests allowed!")
+        if (checkBox1.isChecked) {
+            count++
+            userInterests["interest$count"] = "Wildlife"
+        }
+        if (checkBox2.isChecked) {
+            count++
+            userInterests["interest$count"] = "Travel"
+        }
+        if (checkBox3.isChecked) {
+            count++
+            userInterests["interest$count"] = "Food"
+        }
+        if (checkBox4.isChecked) {
+            count++
+            userInterests["interest$count"] = "Socialising"
+        }
+        if (checkBox5.isChecked) {
+            count++
+            userInterests["interest$count"] = "Books"
+        }
+        if (checkBox6.isChecked) {
+            count++
+            userInterests["interest$count"] = "Games"
+        }
+        if (checkBox7.isChecked) {
+            count++
+            userInterests["interest$count"] = "Netflix"
+        }
+        when {
+            count > 6 -> showToast("Max 6 interests allowed!")
 
-                count <= 0 -> showToast("Please select at least 1 interest!")
+            count <= 0 -> showToast("Please select at least 1 interest!")
 
-                else -> {
-                    checkBoxRef.collection("interests").document("interestList")
-                        .set(userInterests)
-                        .addOnSuccessListener {
-                            val aboutMe = aboutMeEditText.text.toString()
+            else -> {
+                checkBoxRef.collection("interests").document("interestList")
+                    .set(userInterests)
+                    .addOnSuccessListener {
+                        val aboutMe = aboutMeEditText.text.toString()
 
-                            if (aboutMe.isNotEmpty()) {
-                                checkBoxRef.update("aboutMe", aboutMe)
-                                    .addOnSuccessListener {
-                                        dismiss()
-                                    }
-                            }
-                            showToast("Updated interest list")
-                            dismiss()
+                        if (aboutMe.isNotEmpty()) {
+                            checkBoxRef.update("aboutMe", aboutMe)
+                                .addOnSuccessListener {
+                                    dismiss()
+                                }
                         }
-                }
+                        showToast("Updated interest list")
+                        dismiss()
+                    }
             }
         }
-
-        return rootView
     }
 
     private fun showToast(toastMessage: String) {

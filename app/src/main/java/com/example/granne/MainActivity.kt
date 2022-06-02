@@ -30,13 +30,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         auth = Firebase.auth
 
-        val currentUser = auth.currentUser
-        if (currentUser != null) { // Check if user is signed in
-            startActivity(Intent(this, HomeActivity::class.java))
-            Log.d("!","Auto logged in with email: ${auth.currentUser!!.email}")
-        } else {
-            Log.d("!", "No user logged in")
-        }
+        checkUserSign()
 
 
         title = "Granne"
@@ -70,6 +64,17 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>) {}
 
         }
+    }
+
+    private fun checkUserSign(){
+        val currentUser = auth.currentUser
+        if (currentUser != null) { // Check if user is signed in
+            startActivity(Intent(this, HomeActivity::class.java))
+            Log.d("!","Auto logged in with email: ${auth.currentUser!!.email}")
+        } else {
+            Log.d("!", "No user logged in")
+        }
+
     }
 
     private fun setLocale(localeName: String) {

@@ -24,39 +24,42 @@ class ForgotPasswordActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         val btnSubmitPassword: Button = findViewById(R.id.btn_submitPassword)
-        val enterEmail: EditText = findViewById(R.id.et_enterEmail)
 
         btnSubmitPassword.setOnClickListener {
-            val email: String = enterEmail.text.toString().trim { it <= ' ' }
-            if (email.isEmpty()) {
-                Log.d(TAG, "Enter Email")
-                Toast.makeText(
-                    this@ForgotPasswordActivity,
-                    "Please enter your email address.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }else{
-                Firebase.auth.sendPasswordResetEmail(email)
-                    .addOnCompleteListener { task ->
-                        if(task.isSuccessful){
-                            Log.d(TAG, "Email sent")
-                            Toast.makeText(
-                                this@ForgotPasswordActivity,
-                                "Email successfully sent to reset your password.",
-                                Toast.LENGTH_LONG
-                            ).show()
+            submitPassword()
+        }
+    }
+    private fun submitPassword(){
+        val enterEmail: EditText = findViewById(R.id.et_enterEmail)
+        val email: String = enterEmail.text.toString().trim { it <= ' ' }
+        if (email.isEmpty()) {
+            Log.d(TAG, "Enter Email")
+            Toast.makeText(
+                this@ForgotPasswordActivity,
+                "Please enter your email address.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }else{
+            Firebase.auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if(task.isSuccessful){
+                        Log.d(TAG, "Email sent")
+                        Toast.makeText(
+                            this@ForgotPasswordActivity,
+                            "Email successfully sent to reset your password.",
+                            Toast.LENGTH_LONG
+                        ).show()
 
-                            finish()
-                        }
-                        else{
-                            Toast.makeText(
-                                this@ForgotPasswordActivity,
-                                task.exception!!.message.toString(),
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+                        finish()
                     }
-            }
+                    else{
+                        Toast.makeText(
+                            this@ForgotPasswordActivity,
+                            task.exception!!.message.toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
         }
     }
 }

@@ -43,17 +43,21 @@ class LoginActivity : AppCompatActivity() {
 
 
         buttonSignIn.setOnClickListener {
-            when {
-                checkUserInputs() -> {
-                    if (password.length < 6) {
-                        showToast("Password must be at least 6 characters")
-                    } else signIn(email, password)
-                }
-
-                !checkUserInputs() -> showToast("Empty inputs")
-            }
+            btnSignIn()
         }
 
+    }
+
+    private fun btnSignIn(){
+        when {
+            checkUserInputs() -> {
+                if (password.length < 6) {
+                    showToast("Password must be at least 6 characters")
+                } else signIn(email, password)
+            }
+
+            !checkUserInputs() -> showToast("Empty inputs")
+        }
     }
 
     private fun checkUserInputs(): Boolean {

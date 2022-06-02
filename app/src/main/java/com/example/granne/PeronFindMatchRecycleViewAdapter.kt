@@ -35,7 +35,7 @@ class PersonFindMatchRecycleViewAdapter(
         val person = persons[position]
 
         holder.nameTV.text = person.name.toString()
-        holder.interestTV.text = person.intressen.toString()
+        holder.interestTV.text = person.interests.toString()
         holder.aboutMeTV.text = person.aboutMe.toString()
 
         holder.buttonAdd.setOnClickListener {
@@ -52,7 +52,7 @@ class PersonFindMatchRecycleViewAdapter(
 
             Log.d("!", ">> ${person.name}}")
             Log.d("!", ">> ${person.aboutMe}}")
-            Log.d("!", ">> ${person.intressen}}")
+            Log.d("!", ">> ${person.interests}}")
             Log.d("!", ">> ${person.uid}}")
 
             db.collection("userData").document(auth.currentUser!!.uid)

@@ -39,27 +39,31 @@ class CreateAccountActivity : AppCompatActivity() {
         tosText = findViewById(R.id.tosText)
         tosBox = findViewById(R.id.tosCheckBox)
 
+
         buttonRegister.setOnClickListener {
-            when {
-                checkUserInputs() -> {
-                    if (password.length >= 6) {
-                        if (nickname.length >= 6) {
-                            if (tosBox.isChecked) {
-                                createAccount(email, password, nickname)
-                            } else showToast("You must accept Terms of Service")
-                        } else showToast("Nickname must be longer than 6 characters")
-                    } else showToast("Password must be longer than 6 characters")
-                }
-
-                !checkUserInputs() -> showToast("Empty inputs!")
-            }
+            checkUsersInputs()
         }
-
         tosText.setOnClickListener {
             val dialog = TosDialogFragment()
             dialog.show(supportFragmentManager, "tosDialog")
         }
 
+    }
+
+    private fun checkUsersInputs (){
+        when {
+            checkUserInputs() -> {
+                if (password.length >= 6) {
+                    if (nickname.length >= 6) {
+                        if (tosBox.isChecked) {
+                            createAccount(email, password, nickname)
+                        } else showToast("You must accept Terms of Service")
+                    } else showToast("Nickname must be longer than 6 characters")
+                } else showToast("Password must be longer than 6 characters")
+            }
+
+            !checkUserInputs() -> showToast("Empty inputs!")
+        }
     }
 
     private fun createAccount(email: String, password: String, nickname: String) {
@@ -76,7 +80,6 @@ class CreateAccountActivity : AppCompatActivity() {
                         "email" to email,
                         "uid" to user.uid,
                         "location" to ""
-
                     )
 
                     db.collection("userData")

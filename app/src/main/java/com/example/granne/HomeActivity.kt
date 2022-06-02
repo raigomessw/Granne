@@ -39,7 +39,6 @@ class HomeActivity : AppCompatActivity() {
 
         buttonChat.setOnClickListener {
             startActivity(Intent(this, ChatListActivity::class.java))
-
         }
 
         buttonOptions.setOnClickListener {
@@ -61,7 +60,10 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        nickNameChanges()
+    }
 
+    private fun nickNameChanges(){
         // Listen for changes in nickname
         db.collection("userData").document(auth.currentUser!!.uid)
             .addSnapshotListener { snapshot, error ->
