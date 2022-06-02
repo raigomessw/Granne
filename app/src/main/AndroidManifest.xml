@@ -10,28 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Granne">
         <activity
-            android:name=".ChatRoomActivity"
+            android:name=".activities.chat.ChatRoomActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatListActivity"
+            android:name=".activities.chat.ChatListActivity"
             android:exported="false" />
         <activity
-            android:name=".ForgotPasswordActivity"
+            android:name=".activities.userAcc.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".activities.ChatActivity"
             android:exported="true" />
         <activity
-            android:name=".FindMatchActivity"
+            android:name=".activities.userAcc.FindMatchActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".activities.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".CreateAccountActivity"
+            android:name=".activities.userAcc.CreateAccountActivity"
             android:exported="true" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.userAcc.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

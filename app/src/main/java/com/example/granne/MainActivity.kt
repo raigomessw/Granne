@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import com.example.granne.activities.userAcc.CreateAccountActivity
+import com.example.granne.activities.HomeActivity
+import com.example.granne.activities.userAcc.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase

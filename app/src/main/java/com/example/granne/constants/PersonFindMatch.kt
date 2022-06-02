@@ -1,4 +1,6 @@
-package com.example.granne
+package com.example.granne.constants
+
+import com.example.granne.R
 
 data class PersonFindMatch(
     val name: Any? = null,
